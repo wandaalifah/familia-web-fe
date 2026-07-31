@@ -23,7 +23,7 @@ export default function FloatingBadge({
       className={`${positionClasses} bg-white p-3 rounded-xl shadow-xl flex items-center gap-2 animate-bounce`}
       style={{ animationDuration }}
     >
-      <Icon className="h-5 w-5 text-amber-500" />
+      <Icon className="h-5 w-5 text-[#d6c3a5]" />
       <span className="font-bold text-sm">{label}</span>
     </div>
   );
