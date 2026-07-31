@@ -17,7 +17,7 @@ export default function AboutSection() {
 
         <div className="grid md:grid-cols-3 gap-8 text-left">
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <Shield className="h-10 w-10 text-amber-500 mb-4" />
+            <Shield className="h-10 w-10 text-[#d6c3a5] mb-4" />
             <h3 className="text-xl font-bold mb-2">Our Mission & Vision</h3>
             <p className="text-slate-600 text-sm">
               To elevate the standard of veterinary medicine through continuous
@@ -26,7 +26,7 @@ export default function AboutSection() {
             </p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <Award className="h-10 w-10 text-amber-500 mb-4" />
+            <Award className="h-10 w-10 text-[#d6c3a5] mb-4" />
             <h3 className="text-xl font-bold mb-2">Certifications</h3>
             <p className="text-slate-600 text-sm">
               We are a fully accredited AAHA (American Animal Hospital
@@ -35,7 +35,7 @@ export default function AboutSection() {
             </p>
           </div>
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-            <CheckCircle2 className="h-10 w-10 text-amber-500 mb-4" />
+            <CheckCircle2 className="h-10 w-10 text-[#d6c3a5] mb-4" />
             <h3 className="text-xl font-bold mb-2">Why Clients Trust Us</h3>
             <p className="text-slate-600 text-sm">
               With transparent pricing, state-of-the-art technology, and a
