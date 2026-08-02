@@ -30,10 +30,10 @@ export default function BlogSection() {
         <div className="flex justify-between items-end mb-12">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-              Pet Care Tips & Blog
+              Familia's Pet Care Tips & Blog
             </h2>
             <p className="text-slate-600">
-              Expert advice to keep your best friend healthy.
+              Memberikan layanan kesehatan hewan yang profesional, hangat, dan terpercaya untuk setiap anggota keluarga berbulu.
             </p>
           </div>
         </div>

@@ -4,8 +4,6 @@ import AboutSection from "../AboutSection";
 import ServicesSection from "../ServicesSection";
 import VetsSection from "../VetsSection";
 import FacilitiesSection from "../FacilitiesSection";
-import TestimonialsSection from "../TestimonialsSection";
-import BlogSection from "../BlogSection";
 import FooterSection from "../FooterSection";
 
 export default function LandingPage() {
@@ -17,8 +15,8 @@ export default function LandingPage() {
       <ServicesSection />
       <VetsSection />
       <FacilitiesSection />
-      <TestimonialsSection />
-      <BlogSection />
+      {/* <TestimonialsSection /> */}
+      {/* <BlogSection /> */}
       <FooterSection />
     </div>
   );
