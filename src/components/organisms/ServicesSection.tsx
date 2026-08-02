@@ -4,21 +4,21 @@ import {
   Activity,
   Heart,
   Scissors,
-  TestTube,
+  HouseHeart,
   Cross,
   Pill,
 } from "lucide-react";
 import { ServiceCard } from "@/src/components/molecules";
 
 const services = [
-  { icon: Stethoscope, title: "Health Checkups", description: "Routine wellness exams." },
-  { icon: Syringe, title: "Vaccinations", description: "Essential immunizations." },
-  { icon: Activity, title: "Surgery", description: "Safe, monitored operations." },
-  { icon: Heart, title: "Dental Care", description: "Cleaning and extractions." },
-  { icon: Scissors, title: "Grooming", description: "Baths, cuts, and nail trims." },
-  { icon: TestTube, title: "Laboratory", description: "In-house bloodwork & diagnostics." },
-  { icon: Cross, title: "Emergency Care", description: "Urgent medical interventions." },
-  { icon: Pill, title: "Pet Pharmacy", description: "Prescriptions and supplements." },
+  { icon: Stethoscope, title: "Pemeriksaan & Konsultasi", description: "Diagnosis dan konsultasi kesehatan." },
+  { icon: Syringe, title: "Vaksinasi", description: "Perlindungan dari penyakit menular." },
+  { icon: Activity, title: "Operasi & Sterilisasi", description: "Tindakan bedah yang aman." },
+  { icon: Heart, title: "Perawatan Gigi", description: "Scaling dan kesehatan gigi." },
+  { icon: Scissors, title: "Grooming", description: "Perawatan kebersihan dan kesehatan kulit." },
+  { icon: HouseHeart, title: "Home Visit", description: "Layanan dokter ke rumah." },
+  { icon: Cross, title: "Pet Hotel", description: "Penitipan yang nyaman dan terpantau." },
+  { icon: Pill, title: "Rawat Inap", description: "Perawatan intensif sesuai kebutuhan." },
 ];
 
 export default function ServicesSection() {
@@ -27,9 +27,9 @@ export default function ServicesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-            Our Services
+            Layanan Kami
           </h2>
-          <p className="text-slate-600">Comprehensive care under one roof.</p>
+          <p className="text-slate-600">Solusi lengkap untuk kesehatan dan kenyamanan hewan kesayangan Anda.</p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {services.map((service, idx) => (
