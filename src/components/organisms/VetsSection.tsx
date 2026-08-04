@@ -1,3 +1,5 @@
+'use client'
+
 import { VetCard } from "@/src/components/molecules";
 
 const vets = [

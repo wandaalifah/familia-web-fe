@@ -1,3 +1,5 @@
+'use client'
+
 import { Award, CheckCircle2, Star, Sparkle, HeartHandshake } from "lucide-react";
 
 export default function AboutSection() {

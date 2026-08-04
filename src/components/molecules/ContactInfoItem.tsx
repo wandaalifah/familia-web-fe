@@ -1,7 +1,5 @@
-import { type LucideIcon } from "lucide-react";
-
 interface ContactInfoItemProps {
-  icon: LucideIcon;
+  icon: React.ComponentType<{ className?: string }>;
   iconColor?: string;
   children: React.ReactNode;
 }

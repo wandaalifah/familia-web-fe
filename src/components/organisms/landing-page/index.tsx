@@ -1,3 +1,5 @@
+'use client'
+
 import Navbar from "../Navbar";
 import HeroSection from "../HeroSection";
 import AboutSection from "../AboutSection";
@@ -5,6 +7,7 @@ import ServicesSection from "../ServicesSection";
 import VetsSection from "../VetsSection";
 import FacilitiesSection from "../FacilitiesSection";
 import FooterSection from "../FooterSection";
+import TestimonialsSection from "../TestimonialsSection";
 
 export default function LandingPage() {
   return (
@@ -15,7 +18,7 @@ export default function LandingPage() {
       <ServicesSection />
       <VetsSection />
       <FacilitiesSection />
-      {/* <TestimonialsSection /> */}
+      <TestimonialsSection />
       {/* <BlogSection /> */}
       <FooterSection />
     </div>

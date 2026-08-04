@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface BlogCardProps {
   title: string;
   tag: string;
@@ -8,7 +10,7 @@ export default function BlogCard({ title, tag, image }: BlogCardProps) {
   return (
     <div className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
       <div className="h-40 bg-slate-200 w-full relative">
-        <img src={image} alt={title} className="w-full h-full object-cover" />
+        <Image src={image} alt={title} fill className="object-cover" />
         <span className="absolute top-2 left-2 bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded">
           {tag}
         </span>

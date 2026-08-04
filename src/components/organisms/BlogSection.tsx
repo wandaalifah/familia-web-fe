@@ -1,3 +1,5 @@
+'use client'
+
 import { BlogCard } from "@/src/components/molecules";
 
 const blogs = [
@@ -30,7 +32,7 @@ export default function BlogSection() {
         <div className="flex justify-between items-end mb-12">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-              Familia's Pet Care Tips & Blog
+              Familia`&apos;`s Pet Care Tips & Blog
             </h2>
             <p className="text-slate-600">
               Memberikan layanan kesehatan hewan yang profesional, hangat, dan terpercaya untuk setiap anggota keluarga berbulu.

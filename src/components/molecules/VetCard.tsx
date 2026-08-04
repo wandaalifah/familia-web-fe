@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface VetCardProps {
   name: string;
   role: string;
@@ -13,7 +15,11 @@ export default function VetCard({
 }: VetCardProps) {
   return (
     <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
-      <img src={image} alt={name} className="w-full h-64 object-cover" />
+      {image && (
+        <div className="relative w-full h-64">
+          <Image src={image} alt={name} fill className="object-cover" />
+        </div>
+      )}
       <div className="p-6 space-y-3">
         <div>
           <h3 className="text-xl font-bold">{name}</h3>

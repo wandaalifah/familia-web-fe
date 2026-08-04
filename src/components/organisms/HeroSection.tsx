@@ -1,5 +1,8 @@
-import { Phone, Cross, Scissors } from "lucide-react";
+'use client'
+
+import { Phone, Scissors, Stethoscope, Syringe, Activity, Heart, HouseHeart, Bone, PillBottle } from "lucide-react";
 import { FloatingBadge } from "@/src/components/atoms";
+import Image from "next/image";
 
 export default function HeroSection() {
   return (
@@ -18,7 +21,7 @@ export default function HeroSection() {
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <a
-              href="#contact"
+              href="https://wa.me/6281227662988"
               className="inline-flex items-center justify-center rounded-full text-base font-medium transition-colors bg-[#1a1a1a] text-white hover:bg-[#333333] h-12 px-8 shadow-lg shadow-blue-500/20"
             >
               <Phone className="mr-2 h-5 w-5" /> Hubungi Kami
@@ -29,20 +32,22 @@ export default function HeroSection() {
           <div className="absolute inset-0 bg-blue-100 rounded-full blur-3xl opacity-50 transform translate-x-10 translate-y-10"></div>
           
           <div className="relative w-[55%] sm:w-[65%] md:w-full max-w-md aspect-square mx-auto">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1599443015574-be5fe8c0bf04?auto=format&fit=crop&q=80&w=800"
               alt="Veterinarian holding a dog"
+              width={800}
+              height={800}
               className="relative z-10 rounded-full w-full h-full object-cover border-8 border-white shadow-2xl"
             />
             
-            <FloatingBadge icon={Cross}    label="Pemeriksaan"  angle={0}   radius="65%" delay="0s"   />
-            <FloatingBadge icon={Cross}    label="Pengobatan"   angle={45}  radius="65%" delay="0.3s" />
-            <FloatingBadge icon={Scissors} label="Vaksinasi"    angle={90}  radius="65%" delay="0.6s" />
-            <FloatingBadge icon={Scissors} label="Pet Hotel"    angle={135} radius="65%" delay="0.9s" />
+            <FloatingBadge icon={Stethoscope}    label="Pemeriksaan"  angle={0}   radius="65%" delay="0s"   />
+            <FloatingBadge icon={PillBottle}    label="Pengobatan"   angle={45}  radius="65%" delay="0.3s" />
+            <FloatingBadge icon={Syringe} label="Vaksinasi"    angle={90}  radius="65%" delay="0.6s" />
+            <FloatingBadge icon={Bone} label="Pet Hotel"    angle={135} radius="65%" delay="0.9s" />
             <FloatingBadge icon={Scissors} label="Grooming"     angle={180} radius="65%" delay="1.2s" />
-            <FloatingBadge icon={Scissors} label="Operasi"      angle={225} radius="65%" delay="1.5s" />
-            <FloatingBadge icon={Scissors} label="House Call"   angle={270} radius="65%" delay="1.8s" />
-            <FloatingBadge icon={Scissors} label="Scalling"     angle={315} radius="65%" delay="2.1s" />
+            <FloatingBadge icon={Activity} label="Operasi"      angle={225} radius="65%" delay="1.5s" />
+            <FloatingBadge icon={HouseHeart} label="House Call"   angle={270} radius="65%" delay="1.8s" />
+            <FloatingBadge icon={Heart} label="Scalling"     angle={315} radius="65%" delay="2.1s" />
           </div>
         </div>
       </div>

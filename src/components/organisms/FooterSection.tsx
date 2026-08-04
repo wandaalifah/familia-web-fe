@@ -1,14 +1,18 @@
+'use client'
+
 import { Phone, Mail, MapPin } from "lucide-react";
 import { ContactInfoItem } from "@/src/components/molecules";
+import InstagramIcon from "@/src/components/atoms/InstagramIcon";
+import Image from "next/image";
 
 export default function FooterSection() {
   return (
     <footer id="contact" className="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
-      <div className="container mx-auto px-4 grid md:grid-cols-4">
+      <div className="container mx-auto px-4 grid md:grid-cols-4 gap-10 md:gap-6">
         <div className="space-y-4 col-span-1 md:col-span-2">
           <div className="flex items-center gap-2 text-white mb-6">
-            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
-              <img src="/small-icon.png" className="w-24 h-24 object-contain" />
+            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden relative">
+              <Image src="/small-icon.png" alt="Familia Vet & Care" fill className="object-contain" />
             </div>
             <span className="text-2xl font-bold tracking-tight">
               Familia Vet & Care
@@ -47,6 +51,16 @@ export default function FooterSection() {
               className="hover:text-white transition-colors"
             >
               familiavetandcare@gmail.com
+            </a>
+          </ContactInfoItem>
+          <ContactInfoItem icon={InstagramIcon} iconColor="text-white">
+            <a
+              href="https://www.instagram.com/familiavetandcare/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              @familiavetandcare
             </a>
           </ContactInfoItem>
         </div>
