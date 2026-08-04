@@ -29,13 +29,18 @@ export default function FooterSection() {
         <div className="space-y-4">
           <h4 className="text-white font-bold text-lg mb-4">Hubungi Kami</h4>
           <ContactInfoItem icon={MapPin}>
-            <p>
+            <a
+              href="https://maps.google.com/?q=Familia+Vet+%26+Care+Surakarta"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
               Gg. Nanas I No.11, RT.01/RW.07
               <br />
               Jajar, Kec. Laweyan
               <br />
               Kota Surakarta, Jawa Tengah 57144
-            </p>
+            </a>
           </ContactInfoItem>
           <ContactInfoItem icon={Phone} iconColor="text-green-500">
             <a

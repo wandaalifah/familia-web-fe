@@ -20,7 +20,7 @@ export default function TestimonialsSection() {
   }, []); // The empty array ensures this only runs once when the component mounts
 
   return (
-    <section className="py-24 bg-amber-50">
+    <section className="py-24">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-12">
           Happy Pets, Happy Clients
