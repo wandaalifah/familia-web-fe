@@ -1,3 +1,5 @@
+'use client'
+
 import { FacilityImage } from "@/src/components/molecules";
 
 export default function FacilitiesSection() {
