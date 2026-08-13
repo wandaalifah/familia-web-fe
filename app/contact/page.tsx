@@ -135,7 +135,7 @@ export default function ContactPage() {
                   href="https://www.instagram.com/familiavetandcare/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-full text-base font-medium transition-colors bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 h-12 px-8 shadow-lg"
+                  className="inline-flex items-center justify-center rounded-full text-base font-medium transition-colors from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 h-12 px-8 shadow-lg"
                 >
                   <InstagramIcon className="mr-2 h-5 w-5 text-white" /> @familiavetandcare
                 </a>
