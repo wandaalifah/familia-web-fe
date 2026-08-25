@@ -1,42 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useLoginUserMutation } from "@/src/services/mutation/login/user";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/admin/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  const { mutate: loginUser, isPending: loading } = useLoginUserMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
 
-    try {
-      // TODO: Replace with actual API call
-      // const res = await fetch("/api/admin/login", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ email, password }),
-      // });
-      // if (!res.ok) throw new Error("Invalid credentials");
-
-      // Simulate login delay
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      if (email && password) {
-        router.push("/admin/dashboard");
-      } else {
-        setError("Please enter both email and password.");
+    loginUser(
+      { username: email, password },
+      {
+        onSuccess: (response) => {
+          if (response.status) {
+            router.push(redirectTo);
+          } else {
+            setError(response.message || "Login failed. Please try again.");
+          }
+        },
+        onError: (err) => {
+          setError(err.message || "Invalid email or password.");
+        },
       }
-    } catch {
-      setError("Invalid email or password.");
-    } finally {
-      setLoading(false);
-    }
+    );
   };
 
   return (

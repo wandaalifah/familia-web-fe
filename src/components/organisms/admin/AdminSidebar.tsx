@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
@@ -14,18 +14,36 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useLogoutUserMutation } from "@/src/services/mutation/login/user";
+import { clearSession } from "@/src/services/session/session";
 
 const navItems = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Membership", href: "/admin/membership", icon: Users },
   { label: "Points", href: "/admin/points", icon: Star },
-  { label: "Rewards", href: "/admin/rewards", icon: Gift },
+  { label: "Coupon", href: "/admin/coupons", icon: Gift },
   { label: "Tiers", href: "/admin/tiers", icon: Layers },
 ];
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { mutate: logoutUser } = useLogoutUserMutation();
+
+  const handleLogout = async () => {
+    logoutUser(undefined, {
+      onSuccess: async () => {
+        await clearSession();
+        router.push("/login");
+      },
+      onError: async () => {
+        // Even if API call fails, clear local session
+        await clearSession();
+        router.push("/login");
+      },
+    });
+  };
 
   return (
     <>
@@ -93,13 +111,13 @@ export default function AdminSidebar() {
 
         {/* Logout */}
         <div className="border-t border-[#E5E7EB] p-3">
-          <Link
-            href="/admin/login"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-[#6B7280] transition-colors hover:bg-[#FEF2F2] hover:text-[#DC2626]"
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-[#6B7280] transition-colors hover:bg-[#FEF2F2] hover:text-[#DC2626]"
           >
             <LogOut className="h-4 w-4 shrink-0" />
             Logout
-          </Link>
+          </button>
         </div>
       </aside>
     </>

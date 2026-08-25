@@ -65,8 +65,10 @@ const SearchWithFilter = ({
           >
             <BaseSelectValue placeholder={searchByPlaceholder}>
               {(value) =>
-                searchByOptions.find((opt) => opt.value === value)?.label ??
                 value
+                  ? (searchByOptions.find((opt) => opt.value === value)?.label ??
+                    String(value))
+                  : searchByPlaceholder
               }
             </BaseSelectValue>
           </BaseSelectTrigger>

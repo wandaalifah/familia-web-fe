@@ -69,17 +69,17 @@ export const getColumnsManageMembership = ({
   {
     id: "points",
     accessorKey: "points",
-    header: "Current Points",
+    header: "Point Balance", // points balance
     cell({ row }) {
       return <span>{row.original.points.toLocaleString()}</span>;
     },
   },
   {
-    id: "lifetime_points",
-    accessorKey: "lifetime_points",
-    header: "Lifetime Points",
+    id: "seasonal_points",
+    accessorKey: "seasonal_points",
+    header: "Tier Progress", // tier progress
     cell({ row }) {
-      return <span>{row.original.lifetime_points.toLocaleString()}</span>;
+      return <span>{row.original.seasonal_points.toLocaleString()}</span>;
     },
   },
   {

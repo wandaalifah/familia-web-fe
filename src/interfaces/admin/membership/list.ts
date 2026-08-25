@@ -26,7 +26,7 @@ interface MembershipTier {
 export interface IMembership {
   id: string;
   points: number;
-  lifetime_points: number;
+  seasonal_points: number;
   created_at: Date;
   updated_at: Date;
   userId: string;

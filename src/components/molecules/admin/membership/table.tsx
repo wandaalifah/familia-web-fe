@@ -3,35 +3,12 @@
 import { DataTable } from "../../global/table";
 import MembershipTableHeader from "./table-header";
 import { useManageMembershipQueryStore } from "@/src/store/admin/membership/query";
+import { useManageMembershipModal } from "@/src/store/admin/membership/modal";
+import { useGetMembershipListQuery } from "@/src/services/query/admin/membership";
 import { useShallow } from "zustand/shallow";
 import { useMemo } from "react";
 import { getColumnsManageMembership } from "./column";
 import { IMembership } from "@/src/interfaces/admin/membership/list";
-
-const dummyData: IMembership[] = [
-  {
-    id: "mbr-001",
-    points: 1250,
-    lifetime_points: 4800,
-    created_at: new Date("2025-03-15"),
-    updated_at: new Date("2026-08-01"),
-    userId: "usr-001",
-    tierId: "tier-002",
-    users: {
-      id: "usr-001",
-      email: "budi.santoso@email.com",
-      phone: "+6281234567890",
-      first_name: "Budi",
-      last_name: "Santoso",
-      role: "member",
-    },
-    tiers: {
-      id: "tier-002",
-      name: "Silver",
-      required_points: 1000,
-    },
-  },
-];
 
 const MembershipTable = () => {
   const {
@@ -49,13 +26,27 @@ const MembershipTable = () => {
     )
   );
 
+  const { setOpenedMembership } = useManageMembershipModal();
+
+  const { data, isLoading } = useGetMembershipListQuery(membershipQuery);
+
+  const membershipData = data?.data || [];
+  const pagination = data?.pagination;
+
   const columns = useMemo(
     () =>
       getColumnsManageMembership({
-        onEdit: () => {},
-        onDelete: () => {},
+        onEdit: (id: string) => {
+          const membership = membershipData.find((m) => m.id === id);
+          if (membership) {
+            setOpenedMembership(membership);
+          }
+        },
+        onDelete: (id: string) => {
+          console.log("Delete membership:", id);
+        },
       }),
-    []
+    [membershipData, setOpenedMembership]
   );
 
   const onPageChange = (page: number) => {
@@ -71,15 +62,16 @@ const MembershipTable = () => {
       <DataTable
         containerClassName="max-h-[calc(100vh-280px)] overflow-y-auto"
         columns={columns}
-        data={dummyData}
-        pagination={{
-          current_page: 1,
-          total_page: 1,
-          total_data: dummyData.length,
-          limit: 10,
-          next: null,
-          prev: null,
-        }}
+        data={membershipData}
+        isLoading={isLoading}
+        pagination={pagination ? {
+          current_page: pagination.current_page,
+          total_page: pagination.total_page,
+          total_data: pagination.total_data,
+          limit: pagination.limit || 10,
+          next: pagination.next,
+          prev: pagination.prev,
+        } : undefined}
         onPageChange={onPageChange}
       />
     </div>
