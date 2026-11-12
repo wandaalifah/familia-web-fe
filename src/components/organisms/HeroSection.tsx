@@ -3,6 +3,7 @@
 import { Phone, Scissors, Stethoscope, Syringe, Activity, Heart, HouseHeart, Bone, PillBottle } from "lucide-react";
 import { FloatingBadge } from "@/src/components/atoms";
 import Image from "next/image";
+import heroImage from "@/src/assets/banner-image.jpg";
 
 export default function HeroSection() {
   return (
@@ -33,7 +34,7 @@ export default function HeroSection() {
           
           <div className="relative w-[55%] sm:w-[65%] md:w-full max-w-md aspect-square mx-auto">
             <Image
-              src="https://images.unsplash.com/photo-1599443015574-be5fe8c0bf04?auto=format&fit=crop&q=80&w=800"
+              src={heroImage}
               alt="Veterinarian holding a dog"
               width={800}
               height={800}
