@@ -7,4 +7,5 @@ export { default as FacilitiesSection } from "./FacilitiesSection";
 export { default as TestimonialsSection } from "./TestimonialsSection";
 export { default as BlogSection } from "./BlogSection";
 export { default as FooterSection } from "./FooterSection";
+export { default as MemberLoginSection } from "./MemberLoginSection";
 export { default as LandingPage } from "./landing-page";
