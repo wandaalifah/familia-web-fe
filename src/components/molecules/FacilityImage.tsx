@@ -95,10 +95,10 @@ export default function FacilityImage({
         </>
       )}
 
-      <div className="absolute inset-0 from-black/80 to-transparent flex items-end p-6">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 flex items-end p-6">
         <div>
           <span className="text-white font-bold text-xl">{label}</span>
-          {description && <p className="text-white/70 text-sm mt-1">{description}</p>}
+          {description && <p className="text-white/80 text-sm mt-1">{description}</p>}
         </div>
       </div>
     </div>

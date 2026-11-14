@@ -10,21 +10,23 @@ type BaseButtonProps = React.ComponentPropsWithoutRef<typeof Button> & {
 };
 
 const BaseButton = React.forwardRef<HTMLButtonElement, BaseButtonProps>(
-  ({ className, color = "brown", ...props }, ref) => {
+  ({ className, color = "brown", variant, ...props }, ref) => {
     const activeColor = COLOR_MAP[color as keyof typeof COLOR_MAP];
 
-    const bg = `bg-[${activeColor.main}]`;
-    const hoverBg = `hover:bg-[${activeColor.secondary}]`;
+    // Explicit contrast per variant: solid = black bg + white text,
+    // outline = white bg + black border/text (never black on black).
+    const colorClasses =
+      !variant || variant === "default"
+        ? activeColor.solid
+        : variant === "outline"
+          ? activeColor.outline
+          : "";
 
     return (
       <Button
         ref={ref}
-        className={cn(
-          !props.variant ? bg : "",
-          !props.variant ? hoverBg : "",
-          "hover:cursor-pointer",
-          className
-        )}
+        variant={variant}
+        className={cn("hover:cursor-pointer", colorClasses, className)}
         {...props}
       />
     );

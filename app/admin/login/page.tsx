@@ -1,42 +1,59 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useLoginUserMutation } from "@/src/services/mutation/login/user";
+
+const loginSchema = yup.object({
+  email: yup
+    .string()
+    .email("Enter a valid email address")
+    .required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
+
+type LoginFormValues = yup.InferType<typeof loginSchema>;
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/admin/dashboard";
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: yupResolver(loginSchema),
+    mode: "onTouched",
+  });
+
+  const { mutate: loginUser, isPending: loading } = useLoginUserMutation();
+
+  const onSubmit = (values: LoginFormValues) => {
     setError("");
-    setLoading(true);
 
-    try {
-      // TODO: Replace with actual API call
-      // const res = await fetch("/api/admin/login", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ email, password }),
-      // });
-      // if (!res.ok) throw new Error("Invalid credentials");
-
-      // Simulate login delay
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      if (email && password) {
-        router.push("/admin/dashboard");
-      } else {
-        setError("Please enter both email and password.");
+    loginUser(
+      { username: values.email, password: values.password },
+      {
+        onSuccess: (response) => {
+          if (response.status) {
+            router.push(redirectTo);
+          } else {
+            setError(response.message || "Login failed. Please try again.");
+          }
+        },
+        onError: (err) => {
+          setError(err.message || "Invalid email or password.");
+        },
       }
-    } catch {
-      setError("Invalid email or password.");
-    } finally {
-      setLoading(false);
-    }
+    );
   };
 
   return (
@@ -45,16 +62,16 @@ export default function AdminLoginPage() {
         {/* Logo / Brand */}
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold tracking-tight text-[#1A1A1A]">
-            Admin Panel
+            Familia's Admin Panel
           </h1>
           <p className="mt-1 text-sm text-[#6B7280]">
-            Sign in to manage your dashboard
+            Sign in to manage dashboard
           </p>
         </div>
 
         {/* Login Card */}
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="rounded-xl border border-[#E5E7EB] bg-white p-6 shadow-sm"
         >
           {/* Error Message */}
@@ -76,12 +93,15 @@ export default function AdminLoginPage() {
               id="email"
               type="email"
               placeholder="admin@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              {...register("email")}
               autoComplete="email"
               className="w-full rounded-lg border border-[#D1D5DB] bg-white px-3.5 py-2.5 text-sm text-[#1A1A1A] placeholder:text-[#9CA3AF] focus:border-[#6366F1] focus:outline-none focus:ring-2 focus:ring-[#6366F1]/20 transition-colors"
             />
+            {errors.email && (
+              <p className="mt-1.5 text-xs text-[#DC2626]">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Password Field */}
@@ -92,16 +112,33 @@ export default function AdminLoginPage() {
             >
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-              className="w-full rounded-lg border border-[#D1D5DB] bg-white px-3.5 py-2.5 text-sm text-[#1A1A1A] placeholder:text-[#9CA3AF] focus:border-[#6366F1] focus:outline-none focus:ring-2 focus:ring-[#6366F1]/20 transition-colors"
-            />
+            <div className="relative">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                {...register("password")}
+                autoComplete="current-password"
+                className="w-full rounded-lg border border-[#D1D5DB] bg-white px-3.5 py-2.5 pr-11 text-sm text-[#1A1A1A] placeholder:text-[#9CA3AF] focus:border-[#6366F1] focus:outline-none focus:ring-2 focus:ring-[#6366F1]/20 transition-colors"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-[#9CA3AF] transition-colors hover:text-[#374151] focus:outline-none focus:text-[#374151]"
+              >
+                {showPassword ? (
+                  <EyeOff aria-hidden="true" className="h-4 w-4" />
+                ) : (
+                  <Eye aria-hidden="true" className="h-4 w-4" />
+                )}
+              </button>
+            </div>
+            {errors.password && (
+              <p className="mt-1.5 text-xs text-[#DC2626]">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           {/* Submit Button */}
@@ -112,25 +149,7 @@ export default function AdminLoginPage() {
           >
             {loading ? (
               <span className="inline-flex items-center gap-2">
-                <svg
-                  className="h-4 w-4 animate-spin"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  />
-                </svg>
+                <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
                 Signing in…
               </span>
             ) : (
@@ -141,4 +160,4 @@ export default function AdminLoginPage() {
       </div>
     </div>
   );
-}
+};
