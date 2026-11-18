@@ -3,6 +3,7 @@
 import { Award, PawPrint } from "lucide-react";
 import { useMemberMembershipStore } from "@/src/store/member/membership";
 import { useUserProfileQuery } from "@/src/services/query/user/profile";
+import { formatShortDate } from "@/src/utils/common/date";
 
 const MembershipBannerSection = () => {
   const user = useMemberMembershipStore((state) => state.user);
@@ -120,7 +121,9 @@ const MembershipBannerSection = () => {
             <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-stone-400">
               <span>
                 Terdaftar Sejak:{" "}
-                <strong className="text-stone-200">{user.joinDate}</strong>
+                <strong className="text-stone-200">
+                  {formatShortDate(profile?.membership?.created_at ?? profile?.created_at)}
+                </strong>
               </span>
               <span>
                 Total Transaksi:{" "}

@@ -27,6 +27,7 @@ export const useLoginUserMutation = () => {
 export const useLogoutUserMutation = () => {
   const queryclient = useQueryClient();
   return useMutation({
+    meta: { successMessage: "Anda telah keluar dari akun." },
     mutationFn: async () => {
       const response = await apiLogoutUser();
       if (isApiError(response)) {

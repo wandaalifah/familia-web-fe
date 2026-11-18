@@ -10,6 +10,7 @@ export const useUpdateUserProfileMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    meta: { successMessage: "Data profil berhasil diperbarui!" },
     mutationFn: async (body: IUpdateUserProfileRequest) => {
       const response = await apiUpdateUserProfile(body);
 

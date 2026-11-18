@@ -23,7 +23,12 @@ export type SortableField =
   | "total_report"
   | "is_trending"
   | "is_active"
-  | "created_date";
+  | "created_date"
+  | "type"
+  | "amount"
+  | "transaction_date"
+  | "description"
+  | "user_name";
 
 interface SortableHeaderProps {
   label: string;

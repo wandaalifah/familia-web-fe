@@ -4,83 +4,154 @@ import { DataTable } from "../../global/table";
 import MembershipTableHeader from "./table-header";
 import { useManageMembershipQueryStore } from "@/src/store/admin/membership/query";
 import { useShallow } from "zustand/shallow";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import MemberFormModal, { MemberFormValues } from "./member-form-modal";
+import TierChangeModal, { TierChangeValues } from "./tier-change-modal";
 import { getColumnsManageMembership } from "./column";
-import { IMembership } from "@/src/interfaces/admin/membership/list";
+import { exportData, dateStamp, ExportFormat } from "@/src/utils/export-data";
+import {
+  useMembershipListQuery,
+  useTierOptionsQuery,
+} from "@/src/services/query/admin/membership/list";
+import {
+  useCreateMembershipMutation,
+  useUpdateMembershipTierMutation,
+} from "@/src/services/mutation/admin/membership/list";
 
-const dummyData: IMembership[] = [
-  {
-    id: "mbr-001",
-    points: 1250,
-    lifetime_points: 4800,
-    created_at: new Date("2025-03-15"),
-    updated_at: new Date("2026-08-01"),
-    userId: "usr-001",
-    tierId: "tier-002",
-    users: {
-      id: "usr-001",
-      email: "budi.santoso@email.com",
-      phone: "+6281234567890",
-      first_name: "Budi",
-      last_name: "Santoso",
-      role: "member",
-    },
-    tiers: {
-      id: "tier-002",
-      name: "Silver",
-      required_points: 1000,
-    },
-  },
-];
+type ModalState =
+  | { type: "closed" }
+  | { type: "create" }
+  | { type: "change-tier"; id: string };
+
+const CLOSED: ModalState = { type: "closed" };
 
 const MembershipTable = () => {
-  const {
-    membershipQuery,
-    setMembershipQuery,
-  } = useManageMembershipQueryStore(
-    useShallow(
-      ({
-        membershipQuery,
-        setMembershipQuery,
-      }) => ({
-        membershipQuery,
-        setMembershipQuery,
-      })
-    )
+  const [modal, setModal] = useState<ModalState>(CLOSED);
+  const [filters, setFilters] = useState<Record<string, string>>({});
+
+  const { membershipQuery, setMembershipQuery } = useManageMembershipQueryStore(
+    useShallow(({ membershipQuery, setMembershipQuery }) => ({
+      membershipQuery,
+      setMembershipQuery,
+    })),
   );
+
+  const effectiveQuery = useMemo(
+    () => ({
+      ...membershipQuery,
+      tier_id:
+        filters.tier_id && filters.tier_id !== "ALL" ? filters.tier_id : undefined,
+    }),
+    [membershipQuery, filters],
+  );
+
+  const { data, isLoading, isFetching } = useMembershipListQuery(effectiveQuery);
+  const { data: tierOptions } = useTierOptionsQuery();
+  const createMutation = useCreateMembershipMutation();
+  const tierMutation = useUpdateMembershipTierMutation();
+
+  const rows = data?.items ?? [];
+  const selected =
+    modal.type === "change-tier"
+      ? rows.find((row) => row.id === modal.id)
+      : undefined;
+
+  const handleCreate = async (values: MemberFormValues) => {
+    try {
+      await createMutation.mutateAsync({
+        email: values.email,
+        phone: values.phone,
+        first_name: values.first_name,
+        last_name: values.last_name || undefined,
+        password: values.password || undefined,
+      });
+    } catch {
+      // Error toast is shown by the global MutationCache handler (app/providers.tsx)
+    }
+  };
+
+  const handleChangeTier = async (values: TierChangeValues) => {
+    if (!selected) return;
+    try {
+      await tierMutation.mutateAsync({ id: selected.id, tierId: values.tierId });
+    } catch {
+      // Error toast is shown by the global MutationCache handler (app/providers.tsx)
+    }
+  };
+
+  // Exports only the currently-loaded page — there is no "export all filtered
+  // rows" endpoint in the API contract yet.
+  const handleExport = (format: ExportFormat) => {
+    exportData(
+      rows,
+      [
+        { header: "ID", accessor: (row) => row.id },
+        { header: "First Name", accessor: (row) => row.users.first_name },
+        { header: "Last Name", accessor: (row) => row.users.last_name },
+        { header: "Email", accessor: (row) => row.users.email },
+        { header: "Phone", accessor: (row) => row.users.phone },
+        { header: "Tier", accessor: (row) => row.tiers?.name ?? "" },
+        { header: "Current Points", accessor: (row) => row.points },
+        { header: "Seasonal Points", accessor: (row) => row.seasonal_points },
+      ],
+      `vet-clinic-membership-${dateStamp()}`,
+      format,
+    );
+  };
 
   const columns = useMemo(
     () =>
       getColumnsManageMembership({
-        onEdit: () => {},
-        onDelete: () => {},
+        onChangeTier: (id) => setModal({ type: "change-tier", id }),
       }),
-    []
+    [],
   );
 
   const onPageChange = (page: number) => {
-    setMembershipQuery({
-      ...membershipQuery,
-      page,
-    });
+    setMembershipQuery({ page });
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <MembershipTableHeader />
+      <MembershipTableHeader
+        onCreate={() => setModal({ type: "create" })}
+        onExport={handleExport}
+        filterValues={filters}
+        onApplyFilter={(values) => {
+          setFilters(values);
+          setMembershipQuery({ page: 1 });
+        }}
+        onResetFilter={() => {
+          setFilters({});
+          setMembershipQuery({ page: 1 });
+        }}
+      />
       <DataTable
         containerClassName="max-h-[calc(100vh-280px)] overflow-y-auto"
         columns={columns}
-        data={dummyData}
-        pagination={{
-          current_page: 1,
-          total_page: 1,
-          total_data: dummyData.length,
-          limit: 10,
-          next: null,
-          prev: null,
-        }}
+        data={rows}
+        pagination={data?.pagination ?? undefined}
         onPageChange={onPageChange}
+        isLoading={isLoading || isFetching}
+      />
+
+      <MemberFormModal
+        open={modal.type === "create"}
+        onSubmit={handleCreate}
+        onOpenChange={(open) => !open && setModal(CLOSED)}
+      />
+      <TierChangeModal
+        key={selected?.id ?? "change-tier"}
+        open={modal.type === "change-tier" && Boolean(selected)}
+        memberName={
+          selected
+            ? `${selected.users.first_name} ${selected.users.last_name}`
+            : ""
+        }
+        currentTierId={selected?.tierId ?? null}
+        tierOptions={tierOptions ?? []}
+        onSubmit={handleChangeTier}
+        onOpenChange={(open) => !open && setModal(CLOSED)}
       />
     </div>
   );

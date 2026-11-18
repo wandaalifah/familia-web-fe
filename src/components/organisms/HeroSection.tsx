@@ -11,11 +11,11 @@ export default function HeroSection() {
       <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6 relative z-10 mb-6 md:mb-0">
           <div className="inline-flex items-center rounded-full border border-[#e5e7eb] bg-[#d6c3a5]/20 px-3 py-1 text-sm font-medium text-[#1a1a1a]/60">
-            🐾 Treat Your Pets Like Your Own Familia
+            🐾 Merawat dengan hati karena Mereka adalah Keluarga
           </div>
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight">
-            Merawat dengan hati, karena Mereka adalah{" "}
-            <span className="text-[#d6c3a5]">Keluarga</span>
+            Treat Your Pets Like Your Own{" "}
+            <span className="text-[#d6c3a5]">Familia</span>
           </h1>
           <p className="text-lg text-slate-600 max-w-lg">
             Familia Vet & Care menghadirkan layanan kesehatan hewan yang profesional, nyaman, dan penuh kasih. Mulai dari konsultasi, pemeriksaan, vaksinasi, operasi, grooming, hingga homevisit, semua kami lakukan dengan satu tujuan: memberikan perawatan terbaik bagi setiap anggota keluarga berbulu

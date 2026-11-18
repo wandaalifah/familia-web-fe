@@ -61,12 +61,16 @@ const SearchWithFilter = ({
       <div>
         <BaseSelect value={selectedSearchBy} onValueChange={(value) => onSearchByChange(value as string)}>
           <BaseSelectTrigger
-            className={`${selectWidth} border-none px-1 shadow-none`}
+            aria-label={searchByPlaceholder}
+            className={cn(
+              selectWidth,
+              "h-12 cursor-pointer border-none px-1 text-sm font-medium text-[#1A1A1A] shadow-none focus-visible:ring-0",
+            )}
           >
             <BaseSelectValue placeholder={searchByPlaceholder}>
               {(value) =>
-                searchByOptions.find((opt) => opt.value === value)?.label ??
-                value
+                searchByOptions.find((opt) => opt.value === value)?.label ||
+                searchByPlaceholder
               }
             </BaseSelectValue>
           </BaseSelectTrigger>
@@ -90,10 +94,11 @@ const SearchWithFilter = ({
       />
       <BaseInput
         className="border-none h-12 focus-visible:border-none focus-visible:ring-0 placeholder:text-sm shadow-none"
+        aria-label={searchPlaceholder}
         onChange={handleInputChange}
         placeholder={searchPlaceholder}
       />
-      <IconSearch className="w-4 h-4 shrink-0" />
+      <IconSearch aria-hidden="true" className="w-4 h-4 shrink-0" />
       {showRedSeparator && (
         <BaseSeparator orientation="vertical" className="bg-red-500 w-1" />
       )}

@@ -3,16 +3,14 @@
 import { IMembership } from "@/src/interfaces/admin/membership/list";
 import { ColumnDef } from "@tanstack/react-table";
 import { BaseButton } from "@/src/components/atoms/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { ArrowLeftRight } from "lucide-react";
 
 interface Props {
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
+  onChangeTier: (id: string) => void;
 }
 
 export const getColumnsManageMembership = ({
-  onEdit,
-  onDelete,
+  onChangeTier,
 }: Props): ColumnDef<IMembership>[] => [
   {
     id: "id",
@@ -61,8 +59,12 @@ export const getColumnsManageMembership = ({
     accessorKey: "tiers.name",
     header: "Tier",
     cell({ row }) {
+      const tierName = row.original.tiers?.name;
+      if (!tierName) return <span className="text-[#6B7280]">—</span>;
       return (
-        <span>{row.original.tiers?.name ?? "—"}</span>
+        <span className="inline-flex items-center rounded-full bg-[#d6c3a5]/30 px-2.5 py-0.5 text-xs font-medium text-[#5C4A2A]">
+          {tierName}
+        </span>
       );
     },
   },
@@ -71,15 +73,23 @@ export const getColumnsManageMembership = ({
     accessorKey: "points",
     header: "Current Points",
     cell({ row }) {
-      return <span>{row.original.points.toLocaleString()}</span>;
+      return (
+        <span className="font-medium tabular-nums">
+          {row.original.points.toLocaleString()}
+        </span>
+      );
     },
   },
   {
-    id: "lifetime_points",
-    accessorKey: "lifetime_points",
-    header: "Lifetime Points",
+    id: "seasonal_points",
+    accessorKey: "seasonal_points",
+    header: "Seasonal Points",
     cell({ row }) {
-      return <span>{row.original.lifetime_points.toLocaleString()}</span>;
+      return (
+        <span className="tabular-nums">
+          {row.original.seasonal_points.toLocaleString()}
+        </span>
+      );
     },
   },
   {
@@ -91,23 +101,17 @@ export const getColumnsManageMembership = ({
         <div className="flex items-center justify-start gap-1">
           <BaseButton
             variant={"outline"}
-            className="border-none bg-transparent shadow-none"
-            onClick={() => onEdit(row.original.id)}
+            aria-label="Change tier"
+            className="h-9 w-9 cursor-pointer border-none bg-transparent p-0 text-[#6B7280] shadow-none hover:bg-[#F3F4F6] hover:text-[#1A1A1A]"
+            onClick={() => onChangeTier(row.original.id)}
           >
-            <Pencil className="h-4 w-4" />
-          </BaseButton>
-          <BaseButton
-            variant={"outline"}
-            className="border-none bg-transparent shadow-none"
-            onClick={() => onDelete(row.original.id)}
-          >
-            <Trash2 className="h-4 w-4" />
+            <ArrowLeftRight aria-hidden="true" className="h-4 w-4" />
           </BaseButton>
         </div>
       );
     },
     meta: {
-      className: "w-24",
+      className: "w-16",
     },
   },
 ];

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { useMemberMembershipStore } from "@/src/store/member/membership";
 import { ICoupon } from "@/src/interfaces/member/membership";
 import CouponCard from "@/src/components/molecules/membership/CouponCard";

@@ -6,83 +6,137 @@ import {
   LayoutDashboard,
   Users,
   Star,
-  Gift,
   Layers,
   LogOut,
   Menu,
+  PawPrint,
+  Stethoscope,
+  Ticket,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Membership", href: "/admin/membership", icon: Users },
   { label: "Points", href: "/admin/points", icon: Star },
-  { label: "Rewards", href: "/admin/rewards", icon: Gift },
   { label: "Tiers", href: "/admin/tiers", icon: Layers },
+  { label: "Coupons", href: "/admin/coupons", icon: Ticket },
+  { label: "Pets", href: "/admin/pets", icon: PawPrint },
+  { label: "Medical Records", href: "/admin/medical-records", icon: Stethoscope },
 ];
+
+const focusRing =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d6c3a5]";
+
+function Brand() {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#d6c3a5] text-[#1A1A1A]">
+        <PawPrint aria-hidden="true" className="h-5 w-5" />
+      </span>
+      <div className="leading-tight">
+        <p className="text-sm font-semibold text-white">Familia</p>
+        <p className="text-xs text-white/60">Admin Panel</p>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen]);
+
   return (
     <>
       {/* Mobile top bar */}
-      <div className="flex items-center justify-between border-b border-[#E5E7EB] bg-white px-4 py-3 lg:hidden">
-        <span className="text-base font-bold tracking-tight text-[#1A1A1A]">
-          Admin Panel
-        </span>
+      <header className="sticky top-0 z-30 flex h-14 items-center justify-between bg-[#1A1A1A] px-4 lg:hidden">
+        <Brand />
         <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="rounded-lg p-1.5 text-[#6B7280] hover:bg-[#F3F4F6] transition-colors"
-          aria-label="Toggle sidebar"
+          type="button"
+          onClick={() => setMobileOpen((open) => !open)}
+          className={cn(
+            "flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-white/80 transition-colors hover:bg-white/10 hover:text-white",
+            focusRing,
+          )}
+          aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={mobileOpen}
+          aria-controls="admin-sidebar"
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileOpen ? (
+            <X aria-hidden="true" className="h-5 w-5" />
+          ) : (
+            <Menu aria-hidden="true" className="h-5 w-5" />
+          )}
         </button>
-      </div>
+      </header>
 
       {/* Overlay */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/30 lg:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
+      <div
+        aria-hidden="true"
+        onClick={() => setMobileOpen(false)}
+        className={cn(
+          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-200 lg:hidden",
+          mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
+      />
 
       {/* Sidebar */}
       <aside
+        id="admin-sidebar"
         className={cn(
-          "fixed top-0 left-0 z-50 flex h-screen w-60 flex-col border-r border-[#E5E7EB] bg-white transition-transform duration-200 lg:static lg:translate-x-0",
-          mobileOpen ? "translate-x-0" : "-translate-x-full"
+          "fixed inset-y-0 left-0 z-50 flex h-dvh w-64 flex-col bg-[#1A1A1A] transition-transform duration-200 ease-out lg:sticky lg:top-0 lg:z-auto lg:translate-x-0",
+          mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        {/* Brand */}
-        <div className="flex h-16 items-center border-b border-[#E5E7EB] px-5">
-          <span className="text-base font-bold tracking-tight text-[#1A1A1A]">
-            Admin Panel
-          </span>
+        <div className="flex h-16 items-center border-b border-white/10 px-5">
+          <Brand />
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <nav aria-label="Admin" className="flex-1 overflow-y-auto px-3 py-4">
+          <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-white/60">
+            Menu
+          </p>
           <ul className="space-y-1">
             {navItems.map(({ label, href, icon: Icon }) => {
-              const isActive = pathname === href;
+              const isActive = pathname === href || pathname.startsWith(`${href}/`);
               return (
                 <li key={href}>
                   <Link
                     href={href}
                     onClick={() => setMobileOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                      "relative flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium transition-colors",
+                      focusRing,
                       isActive
-                        ? "bg-[#1A1A1A] text-white"
-                        : "text-[#6B7280] hover:bg-[#F3F4F6] hover:text-[#1A1A1A]"
+                        ? "bg-white/10 text-white"
+                        : "text-white/70 hover:bg-white/5 hover:text-white",
                     )}
                   >
-                    <Icon className="h-4 w-4 shrink-0" />
+                    {isActive && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-y-2 left-0 w-1 rounded-r-full bg-[#d6c3a5]"
+                      />
+                    )}
+                    <Icon
+                      aria-hidden="true"
+                      className={cn(
+                        "h-[18px] w-[18px] shrink-0",
+                        isActive && "text-[#d6c3a5]",
+                      )}
+                    />
                     {label}
                   </Link>
                 </li>
@@ -91,13 +145,15 @@ export default function AdminSidebar() {
           </ul>
         </nav>
 
-        {/* Logout */}
-        <div className="border-t border-[#E5E7EB] p-3">
+        <div className="border-t border-white/10 p-3">
           <Link
             href="/admin/login"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-[#6B7280] transition-colors hover:bg-[#FEF2F2] hover:text-[#DC2626]"
+            className={cn(
+              "flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/70 transition-colors hover:bg-red-500/15 hover:text-red-300",
+              focusRing,
+            )}
           >
-            <LogOut className="h-4 w-4 shrink-0" />
+            <LogOut aria-hidden="true" className="h-[18px] w-[18px] shrink-0" />
             Logout
           </Link>
         </div>

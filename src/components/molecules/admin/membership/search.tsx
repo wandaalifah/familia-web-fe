@@ -9,7 +9,7 @@ const MembershipTableHeaderSearch = () => {
     useManageMembershipQueryStore();
 
   const [searchBy, setSearchBy] = useState<string>(
-    membershipQuery.search_by || ""
+    membershipQuery.search_by || "name"
   );
 
   const searchByOption = [
@@ -45,7 +45,7 @@ const MembershipTableHeaderSearch = () => {
       onSearchChange={handleSearch}
       searchPlaceholder="Search..."
       searchByPlaceholder="Search By"
-      className="w-[40%] border rounded-lg"
+      className="w-full border border-[#E5E7EB] rounded-lg shadow-sm sm:max-w-xl"
       debounceMs={500}
       selectWidth="w-44"
     />

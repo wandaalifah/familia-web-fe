@@ -6,6 +6,7 @@ import { isApiError } from "@/src/utils/common/server-action";
 // Register Admin
 export const useRegisterAdminMutation = () => {
   return useMutation({
+    meta: { successMessage: "Admin registered successfully." },
     mutationFn: async (body: IRegisterAdminRequest) => {
       const response = await apiRegisterAdmin(body);
       if (isApiError(response)) {

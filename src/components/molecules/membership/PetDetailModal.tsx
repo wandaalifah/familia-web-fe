@@ -27,6 +27,14 @@ const PetDetailModal = ({
   const [activeSubTab, setActiveSubTab] = useState<"medical" | "vaccines">(
     initialTab
   );
+  // useState only reads initialTab on mount, but this modal stays mounted between
+  // opens: reset the tab whenever a different pet/tab is requested (or it closes).
+  const requestKey = `${pet?.id ?? "closed"}:${initialTab}`;
+  const [syncedKey, setSyncedKey] = useState(requestKey);
+  if (requestKey !== syncedKey) {
+    setSyncedKey(requestKey);
+    setActiveSubTab(initialTab);
+  }
 
   return (
     <Dialog open={!!pet} onOpenChange={onOpenChange}>

@@ -3,7 +3,7 @@ import ManageMembershipTitle from "@/src/components/molecules/admin/membership/t
 
 const ManageMembership = () => {
   return (
-    <div className="flex flex-col gap-7">
+    <div className="flex flex-col gap-6">
       <ManageMembershipTitle />
       <MembershipTable />
     </div>

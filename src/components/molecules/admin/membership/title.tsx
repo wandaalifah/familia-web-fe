@@ -2,10 +2,13 @@
 
 const ManageMembershipTitle = () => {
   return (
-    <div className="flex justify-between gap-4">
-      <div className="bg-white text-[#3C3C3C] w-full p-3 font-semibold rounded-lg">
+    <div>
+      <h1 className="text-2xl font-semibold tracking-tight text-[#1A1A1A]">
         Manage Membership
-      </div>
+      </h1>
+      <p className="mt-1 text-sm text-[#6B7280]">
+        View and manage members, their tiers, and point balances.
+      </p>
     </div>
   );
 };

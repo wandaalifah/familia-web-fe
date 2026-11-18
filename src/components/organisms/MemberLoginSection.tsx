@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
-  Mail,
+  User,
   Lock,
   Eye,
   EyeOff,
@@ -18,14 +18,23 @@ import {
   ExternalLink,
   X,
 } from "lucide-react";
-import { toast } from "@/components/ui/toast";
+import { toast } from "react-toastify";
 import { useLoginUserMutation } from "@/src/services/mutation/login/user";
+
+// Indonesian-friendly phone: optional +, digits with optional spaces/dashes (8-15 digits)
+const PHONE_PATTERN = /^\+?[0-9][0-9\s-]{6,18}[0-9]$/;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const loginSchema = yup.object({
   email: yup
     .string()
-    .email("Enter a valid email address")
-    .required("Email is required"),
+    .trim()
+    .required("Email atau nomor HP wajib diisi")
+    .test(
+      "email-or-phone",
+      "Masukkan email atau nomor HP yang valid",
+      (value) => EMAIL_PATTERN.test(value) || PHONE_PATTERN.test(value),
+    ),
   password: yup.string().required("Password is required"),
 });
 
@@ -61,31 +70,18 @@ export default function MemberLoginSection() {
       {
         onSuccess: (response) => {
           if (response.status) {
-            toast.add({
-              title: "Login berhasil",
-              description: "Selamat datang kembali di Familia Vet & Care!",
-              type: "success",
-            });
+            toast.success("Login berhasil. Selamat datang kembali di Familia Vet & Care!");
             router.push("/profile");
           } else {
             const message =
               response.message || "Login gagal. Silakan coba lagi.";
             setFormError(message);
-            toast.add({
-              title: "Login gagal",
-              description: message,
-              type: "error",
-            });
+            toast.error(message);
           }
         },
+        // The error toast itself comes from the global MutationCache handler
         onError: (err) => {
-          const message = err.message || "Email atau kata sandi salah.";
-          setFormError(message);
-          toast.add({
-            title: "Login gagal",
-            description: message,
-            type: "error",
-          });
+          setFormError(err.message || "Email atau kata sandi salah.");
         },
       }
     );
@@ -100,8 +96,8 @@ export default function MemberLoginSection() {
             {/* Main Title Heading */}
             <div>
               <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 leading-tight">
-                Merawat dengan hati, karena Mereka adalah{" "}
-                <span className="text-[#d6c3a5]">Keluarga</span>
+                Treat Your Pets Like Your Own{" "}
+                <span className="text-[#d6c3a5]">Familia</span>
               </h1>
               <p className="mt-3 text-sm text-slate-600 leading-relaxed">
                 Masuk ke akun Anda untuk mengakses riwayat rekam medis, jadwal
@@ -123,16 +119,18 @@ export default function MemberLoginSection() {
                 {/* Email Field */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wider">
-                    Alamat Email
+                    Email atau Nomor HP
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                      <Mail className="w-4 h-4" />
+                      <User className="w-4 h-4" />
                     </div>
                     <input
-                      type="email"
+                      type="text"
+                      inputMode="email"
+                      autoComplete="username"
                       {...register("email")}
-                      placeholder="nama@email.com"
+                      placeholder="nama@email.com atau 08123456789"
                       className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-stone-200 rounded-2xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#B88E39] focus:bg-white transition-all"
                     />
                   </div>

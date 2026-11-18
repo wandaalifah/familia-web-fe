@@ -73,7 +73,7 @@ export function DataTable<TData, TValue>({
     <div className={cn("w-full space-y-4", containerClassName)}>
       <div
         className={cn(
-          "rounded-md w-full overflow-x-auto p-2 bg-white",
+          "w-full overflow-x-auto rounded-xl border border-[#E5E7EB] bg-white shadow-sm",
           containerTableClassName,
         )}
       >
@@ -81,20 +81,20 @@ export function DataTable<TData, TValue>({
           className={cn("w-full table-auto", tableClassName)}
           style={{ width: "max-content", minWidth: "100%" }}
         >
-          <BaseTableHeader className="bg-white">
+          <BaseTableHeader className="sticky top-0 z-10 bg-[#FAFAF9]">
             {table.getHeaderGroups().map((headerGroup) => (
               <BaseTableRow
                 key={`${headerGroup.id}-${headerGroup.headers.length}`}
-                className="hover:bg-white"
+                className="border-b border-[#E5E7EB] hover:bg-[#FAFAF9]"
               >
                 {headerGroup.headers.map((header) => (
                   <BaseTableHead
                     key={header.id}
                     className={cn(
                       header.column.columnDef.meta?.className,
-                      "relative text-left text-xs font-semibold text-[#1A1A1A]",
+                      "relative h-11 px-4 text-left text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]",
                       ["action", "actions"].includes(header.id) &&
-                        "sticky right-0 bg-white text-center",
+                        "sticky right-0 bg-[#FAFAF9] text-center",
                     )}
                     style={
                       ["action", "actions"].includes(header.id)
@@ -133,33 +133,35 @@ export function DataTable<TData, TValue>({
             {isLoading ? (
               <BaseTableRow>
                 <BaseTableCell colSpan={columns.length} className="h-64">
-                  <Skeleton className="h-full flex flex-col gap-4 items-center justify-center text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
-                    <span className="text-sm text-[#6B7280]">
-                      Loading...
-                    </span>
+                  <Skeleton
+                    role="status"
+                    className="flex h-full flex-col items-center justify-center gap-3 text-center"
+                  >
+                    <div
+                      aria-hidden="true"
+                      className="h-8 w-8 rounded-full border-2 border-[#E5E7EB] border-t-[#1A1A1A] motion-safe:animate-spin"
+                    />
+                    <span className="text-sm text-[#6B7280]">Loading…</span>
                   </Skeleton>
                 </BaseTableCell>
               </BaseTableRow>
             ) : table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, rowIndex) => (
+              table.getRowModel().rows.map((row) => (
                 <BaseTableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className={cn(
-                    rowIndex % 2 === 0 ? "bg-[#FAFAFA]" : "bg-[#FFFFFF]",
-                  )}
+                  className="border-b border-[#F0EEE9] bg-white last:border-b-0 hover:bg-[#F7F5F0] data-[state=selected]:bg-[#F7F5F0]"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <BaseTableCell
                       key={cell.id}
                       className={cn(
-                        "text-xs text-[#1A1A1A]",
+                        "px-4 py-3 text-sm text-[#1A1A1A]",
                         cell.column.columnDef.meta?.className,
                         !["action", "actions"].includes(cell.column.id) &&
                           "overflow-hidden text-ellipsis whitespace-nowrap",
                         ["action", "actions"].includes(cell.column.id) &&
-                          "sticky right-0 bg-white",
+                          "sticky right-0 bg-inherit",
                       )}
                       style={
                         ["action", "actions"].includes(cell.column.id)
@@ -185,9 +187,9 @@ export function DataTable<TData, TValue>({
               <BaseTableRow>
                 <BaseTableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-40 text-center text-sm text-[#6B7280]"
                 >
-                  No results.
+                  No results found. Try adjusting your search.
                 </BaseTableCell>
               </BaseTableRow>
             )}
@@ -241,7 +243,7 @@ export const DataTablePagination = ({
   return (
     <div className="w-full flex justify-center gap-4 md:justify-between items-center flex-wrap md:flex-nowrap flex-col-reverse md:flex-row mt-4">
       {showPaginationSummary && (
-        <span className="text-sm text-[#1A1A1A] whitespace-nowrap">
+        <span className="text-sm text-[#6B7280] whitespace-nowrap tabular-nums">
           {getPaginationSummary(pagination)}
         </span>
       )}

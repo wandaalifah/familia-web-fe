@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
-import toast from "react-hot-toast";
 import { useMemberMembershipStore } from "@/src/store/member/membership";
 import { IPet } from "@/src/interfaces/member/membership";
 import PetCard from "@/src/components/molecules/membership/PetCard";
@@ -35,7 +33,7 @@ const MembershipPetsSection = () => {
             jadwal vaksinasi.
           </p>
         </div>
-        <button
+        {/* <button
           type="button"
           onClick={() =>
             toast(
@@ -46,7 +44,7 @@ const MembershipPetsSection = () => {
         >
           <Plus className="w-4 h-4 text-amber-400" />
           <span>Tambah Anabul via Admin</span>
-        </button>
+        </button> */}
       </div>
 
       {/* Pets Grid */}

@@ -13,9 +13,9 @@ import {
   Sparkles,
   Ticket,
 } from "lucide-react";
-import toast from "react-hot-toast";
 import { useMemberMembershipStore } from "@/src/store/member/membership";
 import { useUserProfileQuery } from "@/src/services/query/user/profile";
+import { formatShortDate } from "@/src/utils/common/date";
 import { useUpdateUserProfileMutation } from "@/src/services/mutation/user/profile";
 import EditProfileModal from "@/src/components/molecules/membership/EditProfileModal";
 
@@ -125,7 +125,7 @@ const MembershipOverviewSection = () => {
                 {profile?.first_name} {profile?.last_name}
               </h4>
               <span className="inline-block mt-1 -ml-2 px-2.5 py-0.5 rounded-full bg-amber-100 text-[#8C6B28] text-[10px] font-bold">
-                Member sejak {user.joinDate}
+                Member sejak {formatShortDate(profile?.membership?.created_at ?? profile?.created_at)}
               </span>
             </div>
           </div>
@@ -235,10 +235,6 @@ const MembershipOverviewSection = () => {
               onSuccess: () => {
                 updateUserProfile(values);
                 setShowEditProfileModal(false);
-                toast.success("Data profil berhasil diperbarui!");
-              },
-              onError: (error) => {
-                toast.error(error.message || "Gagal memperbarui profil.");
               },
             },
           );

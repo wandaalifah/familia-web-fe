@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogOut, PawPrint } from "lucide-react";
-import toast from "react-hot-toast";
+import Image from "next/image";
+import { LogOut } from "lucide-react";
 import { useLogoutUserMutation } from "@/src/services/mutation/login/user";
 import { clearSession } from "@/src/services/session/session";
 import { useMemberMembershipStore } from "@/src/store/member/membership";
@@ -21,7 +21,6 @@ const MemberHeader = () => {
     logoutUser(undefined, {
       onSettled: async () => {
         await clearSession();
-        toast.success("Anda telah keluar dari akun.");
         router.push("/member");
       },
     });
@@ -32,9 +31,14 @@ const MemberHeader = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/profile" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-slate-900 flex items-center justify-center text-amber-400 shadow-md">
-            <PawPrint className="w-5 h-5" />
-          </div>
+          <Image
+            src="/small-icon.png"
+            alt="Familia Vet & Care"
+            width={80}
+            height={80}
+            className="w-14 h-auto"
+            priority
+          />
           <div>
             <h1 className="font-extrabold text-lg sm:text-xl text-slate-900 tracking-tight leading-none">
               Familia <span className="text-[#B88E39]">Vet & Care</span>
