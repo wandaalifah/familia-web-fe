@@ -63,7 +63,7 @@ const MembershipTable = () => {
         phone: values.phone,
         first_name: values.first_name,
         last_name: values.last_name || undefined,
-        password: values.password || undefined,
+        password: values.password,
       });
     } catch {
       // Error toast is shown by the global MutationCache handler (app/providers.tsx)

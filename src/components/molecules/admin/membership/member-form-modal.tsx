@@ -37,13 +37,11 @@ const memberFormSchema = yup.object({
   password: yup
     .string()
     .trim()
-    .optional()
-    .test(
-      "password-strength",
+    .required("Password is required")
+    .matches(
+      PASSWORD_PATTERN,
       "Min 8 chars, with an uppercase, a lowercase letter and a number",
-      (value) => !value || PASSWORD_PATTERN.test(value),
-    )
-    .default(""),
+    ),
 });
 
 export type MemberFormValues = yup.InferType<typeof memberFormSchema>;
@@ -214,13 +212,13 @@ const MemberFormModal = ({
             <Field
               id="password"
               label="Password"
-              required={false}
+              required
               error={errors.password?.message}
             >
               <BaseInput
                 id="password"
                 type="password"
-                placeholder="Leave blank to let the member set it later"
+                placeholder="Min 8 chars, with upper, lower case & a number"
                 autoComplete="new-password"
                 leftIcon={<Lock className="h-4 w-4" />}
                 aria-invalid={!!errors.password}

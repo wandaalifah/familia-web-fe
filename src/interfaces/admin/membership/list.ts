@@ -62,7 +62,7 @@ export interface ICreateMembershipRequest {
   phone: string;
   first_name: string;
   last_name?: string;
-  password?: string;
+  password: string;
 }
 
 /** Lightweight tier option used for the tier-filter and change-tier dropdowns. */
